@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Water Sort Puzzle Game</title>
+    <link rel="stylesheet" href="water-puzzle.css" />
+    <script src="water-puzzle-games.js"></script>
+  </head>
+  <body>
+    <div id="tubes">
+      <div id="t1">
+        <div id="t14"></div>
+        <div id="t13"></div>
+        <div id="t12"></div>
+        <div id="t11"></div>
+      </div>
+      <div id="t2">
+        <div id="t24"></div>
+        <div id="t23"></div>
+        <div id="t22"></div>
+        <div id="t21"></div>
+      </div>
+      <div id="t3">
+        <div id="t34"></div>
+        <div id="t33"></div>
+        <div id="t32"></div>
+        <div id="t31"></div>
+      </div>
+      <div id="t4">
+        <div id="t44"></div>
+        <div id="t43"></div>
+        <div id="t42"></div>
+        <div id="t41"></div>
+      </div>
+      <div id="t5">
+        <div id="t54"></div>
+        <div id="t53"></div>
+        <div id="t52"></div>
+        <div id="t51"></div>
+      </div>
+    </div>
+
+    <script>
+      // Variables
+      let tube1 = document.getElementById("t1");
+      let tube2 = document.getElementById("t2");
+      let tube3 = document.getElementById("t3");
+      let tube4 = document.getElementById("t4");
+      let tube5 = document.getElementById("t5");
+
+      let tube14 = document.getElementById("t14");
+      let tube13 = document.getElementById("t13");
+      let tube12 = document.getElementById("t12");
+      let tube11 = document.getElementById("t11");
+
+      let tube24 = document.getElementById("t24");
+      let tube23 = document.getElementById("t23");
+      let tube22 = document.getElementById("t22");
+      let tube21 = document.getElementById("t21");
+
+      let tube34 = document.getElementById("t34");
+      let tube33 = document.getElementById("t33");
+      let tube32 = document.getElementById("t32");
+      let tube31 = document.getElementById("t31");
+
+      let tube44 = document.getElementById("t44");
+      let tube43 = document.getElementById("t43");
+      let tube42 = document.getElementById("t42");
+      let tube41 = document.getElementById("t41");
+
+      let tube54 = document.getElementById("t54");
+      let tube53 = document.getElementById("t53");
+      let tube52 = document.getElementById("t52");
+      let tube51 = document.getElementById("t51");
+
+      let inHand = { tube: 0, cell: 0, color: "" };
+      let activePuzzle = puzzle01;
+
+      // Game Object
+      let tubesStatus = {
+        tube1: {
+          cell_1: "",
+          cell_2: "",
+          cell_3: "",
+          cell_4: "",
+          isEmpty: false,
+          isLock: false,
+          allSameColor: false,
+          activeTube: false,
+          activeCell: 4,
+          marginTop: "20px",
+        },
+        tube2: {
+          cell_1: "",
+          cell_2: "",
+          cell_3: "",
+          cell_4: "",
+          isEmpty: false,
+          isLock: false,
+          allSameColor: false,
+          activeTube: false,
+          activeCell: 0,
+          marginTop: "20px",
+        },
+        tube3: {
+          cell_1: "",
+          cell_2: "",
+          cell_3: "",
+          cell_4: "",
+          isEmpty: false,
+          isLock: false,
+          allSameColor: false,
+          activeTube: false,
+          activeCell: 0,
+          marginTop: "20px",
+        },
+        tube4: {
+          cell_1: "",
+          cell_2: "",
+          cell_3: "",
+          cell_4: "",
+          isEmpty: true,
+          isLock: false,
+          allSameColor: false,
+          activeTube: false,
+          activeCell: 0,
+          marginTop: "20px",
+        },
+        tube5: {
+          cell_1: "",
+          cell_2: "",
+          cell_3: "",
+          cell_4: "",
+          isEmpty: true,
+          isLock: false,
+          allSameColor: false,
+          activeTube: false,
+          activeCell: 0,
+          marginTop: "20px",
+        },
+      };
+
+      // Fill tubes from puzzle arrays
+      function fillTubes(puzzle) {
+        for (let i = 1; i <= puzzle.length; i++) {
+          let forActiveCell = 0;
+          for (let y = 1; y <= 4; y++) {
+            eval(
+              "tubesStatus['tube" +
+                i +
+                "']['cell_" +
+                y +
+                "'] = '" +
+                puzzle[i - 1][y - 1] +
+                "'"
+            );
+            if (puzzle[i - 1][y - 1] != "") {
+              forActiveCell++;
+            }
+          }
+
+          eval("tubesStatus['tube" + i + "']['activeCell'] = " + forActiveCell);
+          if (forActiveCell > 0) {
+            eval("tubesStatus['tube" + i + "']['isEmpty'] = " + false);
+          }
+        }
+      }
+
+      // Win Check!
+      function checkFinish() {
+        isFinish = true;
+        for (let tubes in tubesStatus) {
+          if (!tubesStatus[tubes].allSameColor) {
+            isFinish = false;
+            break;
+          }
+        }
+        return isFinish;
+      }
+
+      function checkAllSameColor() {}
+
+      function setMargin() {
+        for (let i = 1; i <= 5; i++) {
+          eval("tube" + i).style.top = eval(
+            "tubesStatus.tube" + i + ".marginTop"
+          );
+        }
+      }
+
+      function setCellBackground() {
+        for (let i = 1; i <= 5; i++) {
+          for (let y = 1; y <= 4; y++) {
+            eval("tube" + i + y).style.backgroundColor = eval(
+              "tubesStatus.tube" + i + ".cell_" + y
+            );
+          }
+        }
+      }
+
+      function setFillCount() {}
+
+      // Reload
+      function reload() {
+        fillTubes(activePuzzle);
+        setCellBackground();
+        setMargin();
+      }
+
+      reload();
+
+      function setDefaultMarginTop() {
+        tubesStatus.tube1.marginTop = "20px";
+        tubesStatus.tube2.marginTop = "20px";
+        tubesStatus.tube3.marginTop = "20px";
+        tubesStatus.tube4.marginTop = "20px";
+        tubesStatus.tube5.marginTop = "20px";
+      }
+
+      function insideTubeOperating(insideTube) {
+
+        let insideTubeActiveCell = eval("tubesStatus.tube" + insideTube + ".activeCell");
+
+        let insideColor = eval(
+          "tubesStatus.tube" + insideTube + ".cell_" + insideTubeActiveCell
+        );
+
+        if(insideColor == undefined){
+            insideColor = "";
+        }
+        
+       // Eğer aktif seçili bir tube yoksa
+        if (inHand.tube == 0) {
+            
+            let isLock = eval("tubesStatus.tube" + insideTube + ".isLock");
+            
+            if (isLock != true && insideTubeActiveCell > 0) {
+                // Seçilen seçilmek için uygun
+            inHand = {
+              cell: insideTubeActiveCell,
+              tube: insideTube,
+              color: eval("tubesStatus.tube" + insideTube + ".cell_" + eval("tubesStatus.tube" + insideTube + ".activeCell"))
+            };
+            setDefaultMarginTop();
+            eval("tubesStatus.tube" + insideTube + ".marginTop = '0px'");
+            reload();
+
+            } else {
+                // seçili yok ancak seçilen seçim için uygun değil
+                inHand.tube = 0;
+                inHand.cell = 0;
+                inHand.color = "";
+                setDefaultMarginTop();
+                reload();
+            }
+        } else {
+            // Eğer aktif seçili bir tube varsa
+            // Eğer aktif bir tube varken yeni seçilen aynı mı farklı mı kapasite ve renk olarak uygun mu
+
+            if(insideTube == inHand.tube) {
+                inHand.tube = 0;
+                inHand.cell = 0;
+                inHand.color = "";
+                setDefaultMarginTop();
+                reload();
+            } else {
+                // farklı tube söz konusu kapasite var mı? eğer uygun değilse yeni seçilen son tıklanan olacak
+                if(insideTubeActiveCell < 4){
+                    if(insideColor == inHand.color || insideTubeActiveCell == ""){
+                        
+                        insideTubeActiveCell++;
+                        eval("tubesStatus.tube" + insideTube + ".activeCell = " + insideTubeActiveCell);
+                        eval("tubesStatus.tube" + insideTube + ".cell_" + insideTubeActiveCell + "= '" + inHand.color + "'");
+                        eval("tubesStatus.tube" + inHand.tube + ".activeCell = tubesStatus.tube" + inHand.tube + ".activeCell" - 1);
+                        eval("tubesStatus.tube" + inHand.tube + ".cell_" + inHand.cell + " = ''");
+
+                        activePuzzle[insideTube - 1][insideTubeActiveCell - 1] = inHand.color;
+                        activePuzzle[inHand.tube - 1][inHand.cell - 1] = "";
+                        fillTubes(activePuzzle);
+
+                        // sıfırla
+                        inHand.tube = 0;
+                        inHand.cell = 0;
+                        inHand.color = "";
+                        setDefaultMarginTop();
+                        reload();
+                    }
+                }
+            }
+        }
+      }
+
+      t1.addEventListener("click", function () {
+        insideTubeOperating(1);
+      });
+
+      t2.addEventListener("click", function () {
+        insideTubeOperating(2);
+      });
+
+      t3.addEventListener("click", function () {
+        insideTubeOperating(3);
+      });
+
+      t4.addEventListener("click", function () {
+        insideTubeOperating(4);
+      });
+
+      t5.addEventListener("click", function () {
+        insideTubeOperating(5);
+      });
+    </script>
+  </body>
+</html>

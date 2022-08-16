@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  html,
+  body {
+    background-color: #333;
+  }
+
+  #tubes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: absolute;
+    margin: 100px;
+  }
+  #t1,
+  #t2,
+  #t3,
+  #t4,
+  #t5 {
+    
+    margin-right: 30px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border: 2px solid #fff;
+    border-radius: 0 0 30px 30px;
+    background-color: #000;
+    position: relative;
+    padding-top: 60px;
+  }
+
+  #tubes div div {
+    width: 50px;
+    height: 50px;
+    display: block;
+  }
+
+  #t11,
+  #t21,
+  #t31,
+  #t41,
+  #t51 {
+    border-radius: 0 0 28px 28px;
+  }
